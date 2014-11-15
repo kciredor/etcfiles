@@ -89,6 +89,9 @@ You should now have an instant and proper Arch boot!
 useradd -g wheel -G video,audio,lp kciredor ; passwd kciredor
 pacman -S xorg xorg-xinit awesome (first mesa option)
 
+# use swap just for hibernate (better for SSD)
+echo 1 > /proc/sys/vm/swappiness
+
 # restore home folder backup from fat disk:
 mount /dev/sdb4 ext
 cat ../ext/* | tar xfv -
@@ -141,3 +144,4 @@ VPN
 
 Reinstall:
 - Full disk encryption, 16GB swap, allowing hibernate to disk: https://wiki.archlinux.org/index.php/Dm-crypt/Encrypting_an_entire_system#LVM_on_LUKS
+  (Enable TRIM support for SSD with allow-discards: cryptdevice=/dev/mapper/root:root:allow-discards and also add discard to /etc/fstab entries)
