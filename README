@@ -132,15 +132,22 @@ sudo pacman -Syu (upgrades kernel and everything)
 sudo yaourt -Syua (this fixes the broadcom wl module <- yes you need to be wired connected)
 reboot
 
+In case of no update for broadcom, fix like this:
+    sudo pacman -Q broadcom-wl-dkms
+    sudo dkms remove broadcom-wl/6.30.223.248 --all
+    sudo dkms add broadcom-wl/6.30.223.248 --all
+    sudo dkms build broadcom-wl/6.30.223.248 --all
+    sudo dkms install broadcom-wl/6.30.223.248 --all
+    sudo systemctl restart dkms.service
+    sudo modprobe wl
+
+
 
 
 
 TODO:
 
-Keyboard function keys: brightness control, perhaps sound..
 VPN
-(Auto brightness / keyboard leds)
-(TimeMachine rsync backups?)
 
 Reinstall:
 - Full disk encryption, 16GB swap, allowing hibernate to disk: https://wiki.archlinux.org/index.php/Dm-crypt/Encrypting_an_entire_system#LVM_on_LUKS
