@@ -1,0 +1,136 @@
+These are my /etc config files.
+
+Applies to my new setup with Arch Linux (single boot) on a Macbook Pro retina, 2012 (10.1) model.
+Under active development whilst trying to accomplish a properly working linux install.
+
+
+
+** Arch single boot install on a MacBook Pro Retina, mid 2012, model 10.1 **
+
+Pre reqs:
+0. Backup Mac home folder on a FAT disk, with split up tar files 1GB each + Backup entire disk with TimeMachine + Mute sound in Mac OS
+1. USB Stick with Arch install
+2. USB Stick with b43 drivers (could try broadcom-wl as well for your AP) <- drivers need compilation
+3. Boot Arch install
+4. loadkeys dvorak
+5. WiFi:
+
+modprobe -r b43 bcma
+mkdir /tmp/usb
+mount /dev/sdc1 /tmp/usb 
+cp -R /tmp/usb/b43 /usr/lib/firmware
+modprobe b43
+wpa_passphrase YOUR_SSID password >/etc/wpa_supplicant/wpa_supplicant.conf
+wpa_supplicant -B -i wlp4s0 -c /etc/wpa_supplicant/wpa_supplicant.conf
+dhcpcd wlp4s0
+umount /tmp/usb && rm -r /tmp/usb
+
+6. Partition:
+
+cfdisk
+
+/dev/sda1 200M Microsoft basic data
+/dev/sda2 256M Linux filesystem
+/dev/sda3 YOUR_RAM_SIZE_IN_G Linux swap
+/dev/sda4 <remainder> Linux filesystem
+
+mkfs.vfat -F 32 /dev/sda1
+mkfs.ext2 /dev/sda2
+mkswap /dev/sda3
+swapon /dev/sda3
+mkfs.ext4 /dev/sda4
+
+mount /dev/sda4 /mnt
+mkdir /mnt/boot
+mount /dev/sda2 /mnt/boot
+mkdir /mnt/boot/efi
+mount /dev/sda1 /mnt/boot/efi
+
+7. Follow the Arch beginners guide install:
+
+nano /etc/pacman.d/mirrorlist (put your nearest mirror on top)
+pacstrap -i /mnt base base-devel (all)
+genfstab -U -p /mnt >>/mnt/etc/fstab
+arch-chroot /mnt /bin/bash
+nano /etc/locale.gen -> UTF-8 en_US
+locale-gen
+echo LANG=en_US.UTF-8 > /etc/locale.conf
+export LANG=en_US.UTF-8
+nano /etc/vconsole.conf -> KEYMAP=dvorak and FONT=sun12x22
+nano /etc/modprobe.d/hid_apple.conf -> options hid_apple fnmode=2
+ln -s /usr/share/zoneinfo/Europe/Amsterdam /etc/localtime
+hwclock --systohc --utc
+echo kciredor > /etc/hostname
+nano /etc/hosts: add 127.0.1.1 kciredor.localdomain kciredor
+pacman -S iw wpa_supplicant vim dkms linux-headers dialog
+passwd
+
+8. Bootloader:
+
+pacman -S grub efibootmgr
+mount -t efivarfs efivarfs /sys/firmware/efi/efivars (gives error: busy, already mounted)
+grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=grub --recheck --debug
+gruk-mkconfig -o /boot/efi/EFI/grub/grub.cfg
+cp /boot/efi/EFI/grub/grub.cfg /boot/grub/grub.cfg
+cp /boot/efi/EFI/grubx64.efi /boot/efi/EFI/bootx64.efi
+
+pacman -S refind-efi
+refind-install (gives an error about boot partition order)
+exit
+umount -R /mnt
+reboot
+
+You should now have an instant and proper Arch boot!
+
+9. First boot:
+
+useradd -g wheel -G video,audio,lp kciredor ; passwd kciredor
+pacman -S xorg xorg-xinit awesome (first mesa option)
+
+# restore home folder backup from fat disk:
+mount /dev/sdb4 ext
+cat ../ext/* | tar xfv -
+umount /dev/sdb4
+
+# Use the improved driver supporting just about any AP incl. 5Ghz: broadcom-wl
+sudo pacman -U broadcom-dkms-x.tgz
+Add 'wl' to /etc/modules-load.d and make sure there's a b43 blocklist in /etc/modprobe.d by now.
+sudo pacman -S wpa_actiond
+sudo pacman -S ifplugd
+sudo systemctl enable netctl-ifplugd@enp0s20u2.service
+sudo systemctl enable netctl-auto@wlp4s0.service
+
+Create a wired-dhcp profile in /etc/netctl
+Create wifi-profiles using wifi-menu.
+
+# Upgrade your gfx
+AUR: nvidia-beta-all
+Update /etc/X11/xorg.conf (set DPI for monitor 0 to 96x96)
+.xinitrc: xrandr --output DP-2 --scale .5729x.5729
+
+10. Basics
+
+pacman -S openssh git autojump virtualbox qt4 nfs-tools net-tools
+vim /etc/modules-load.d/virtualbox.conf -> vboxdrv, vboxnetadp, vboxnetflt, vboxpic
+..etc etc etc
+
+12. Notes
+
+Dropbox: AUR, systemctl enable dropbox@username, run once via /opt/dropbox/dropbox to setup; update the sytemctl script to get a systemtray icon
+Spotify: AUR
+Sound: https://wiki.archlinux.org/index.php/Bose_speakers
+
+
+
+TODO:
+
+Screensaver after a while shuts down the external monitor, not coming back after password entry | Sometimes system non-responsive
+Require password after suspend
+Fix brightness control (hcitool systemd script not working, pommed not working, could require a 4 line patch)
+Hibernate to disk -> needs swap space >= RAM size (woops..)
+Disk (probably requires repartitioning) or /home encryption
+Console: swap caps
+
+CrashPlan
+VPN
+(TimeMachine rsync backups?)
