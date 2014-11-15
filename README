@@ -147,8 +147,6 @@ In case of no update for broadcom, fix like this:
 
 TODO:
 
-VPN
-
 Reinstall:
 - Full disk encryption, 16GB swap, allowing hibernate to disk: https://wiki.archlinux.org/index.php/Dm-crypt/Encrypting_an_entire_system#LVM_on_LUKS
   (Enable TRIM support for SSD with allow-discards: cryptdevice=/dev/mapper/root:root:allow-discards and also add discard to /etc/fstab entries)
