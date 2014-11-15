@@ -105,16 +105,17 @@ sudo systemctl enable netctl-auto@wlp4s0.service
 Create a wired-dhcp profile in /etc/netctl
 Create wifi-profiles using wifi-menu.
 
-# Upgrade your gfx -> SKIP, sticking with Nouveau again
-AUR: nvidia-beta-all
-Update /etc/X11/xorg.conf (set DPI for monitor 0 to 96x96)
-.xinitrc: xrandr --output DP-2 --scale .5729x.5729
-
 10. Basics
 
 pacman -S openssh git autojump virtualbox qt4 nfs-tools net-tools
 vim /etc/modules-load.d/virtualbox.conf -> vboxdrv, vboxnetadp, vboxnetflt, vboxpic
 ..etc etc etc
+
+11. Hibernate
+
+Run mkinitcpio -p linux after dropping my etcfiles mkinitcpio.conf with hibernate support: resume in HOOKS
+Run grub-mkconfig -o /boot/grub/grub.cfg after adding GRUB_CMDLINE_LINUX_DEFAULT="quiet resume=/dev/disk/by-uuid/YOUR_SWAP_DISK_UUID"
+Now systemctl hibernate works (assuming you have enough swap space)
 
 12. Notes
 
@@ -125,11 +126,8 @@ CrashPlan: AUR
 
 # Survived the first kernel upgrade from 3.16 to 3.17:
 sudo pacman -Syu (upgrades kernel and everything)
-reboot
 sudo yaourt -Syua (this fixes the broadcom wl module <- yes you need to be wired connected)
-sudo pacman -S nvidia (replaces non-working nvidia-beta-all) <- unless using Nouveau
-
-Probably can do the reboot after yaourt etc, so there's no trouble at all.
+reboot
 
 
 
@@ -138,8 +136,8 @@ TODO:
 
 Keyboard function keys: brightness control, perhaps sound..
 VPN
+(Auto brightness / keyboard leds)
 (TimeMachine rsync backups?)
 
 Reinstall:
-- Full disk encryption, allowing hibernate to disk: https://wiki.archlinux.org/index.php/Dm-crypt/Encrypting_an_entire_system#LVM_on_LUKS
-- Hibernate to disk -> needs swap space >= RAM size
+- Full disk encryption, 16GB swap, allowing hibernate to disk: https://wiki.archlinux.org/index.php/Dm-crypt/Encrypting_an_entire_system#LVM_on_LUKS
