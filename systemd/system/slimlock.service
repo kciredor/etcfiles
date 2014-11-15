@@ -1,0 +1,9 @@
+[Unit]
+Description=Lock after sleep
+
+[Service]
+User=kciredor
+ExecStart=/usr/bin/slimlock
+
+[Install]
+WantedBy=sleep.target
