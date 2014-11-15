@@ -2,6 +2,7 @@ Description='Wired USB DHCP'
 Interface=enp0s20u2
 Connection=ethernet
 IP=dhcp
+DHCPClient='dhclient'
 ## for DHCPv6
 #IP6=dhcp
 ## for IPv6 autoconfiguration
