@@ -2,7 +2,7 @@
 Description=Enable brightness control nvidia
 
 [Service]
-ExecStart=setpci -v -H1 -s 00:01.00 BRIDGE_CONTROL=0
+ExecStart=/usr/bin/setpci -v -H1 -s 00:01.00 BRIDGE_CONTROL=0
 
 [Install]
 WantedBy=multi-user.target

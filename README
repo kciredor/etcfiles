@@ -3,6 +3,8 @@ These are my /etc config files.
 Applies to my new setup with Arch Linux (single boot) on a Macbook Pro retina, 2012 (10.1) model.
 Under active development whilst trying to accomplish a properly working linux install.
 
+The install_deps folder assumes kernel 3.16, you need to build the files yourself if you have a more recent install iso.
+
 
 
 ** Arch single boot install on a MacBook Pro Retina, mid 2012, model 10.1 **
@@ -119,6 +121,15 @@ vim /etc/modules-load.d/virtualbox.conf -> vboxdrv, vboxnetadp, vboxnetflt, vbox
 Dropbox: AUR, systemctl enable dropbox@username, run once via /opt/dropbox/dropbox to setup; update the sytemctl script to get a systemtray icon
 Spotify: AUR
 Sound: https://wiki.archlinux.org/index.php/Bose_speakers
+
+# Survived the first kernel upgrade from 3.16 to 3.17:
+sudo pacman -Syu (upgrades kernel and everything)
+reboot
+sudo yaourt -Syua (this fixes the broadcom wl module <- yes you need to be wired connected)
+sudo pacman -S nvidia (replaces non-working nvidia-beta-all)
+
+Probably can do the reboot after yaourt etc, so there's no trouble at all.
+
 
 
 
