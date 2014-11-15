@@ -135,13 +135,11 @@ Probably can do the reboot after yaourt etc, so there's no trouble at all.
 
 TODO:
 
-Screensaver after a while shuts down the external monitor, not coming back after password entry | Sometimes system non-responsive
-Prevent auto standby
 Require password after suspend
 Keyboard function keys: brightness control, perhaps sound..
 Hibernate to disk -> needs swap space >= RAM size (woops..)
 Disk (probably requires repartitioning) or /home encryption
-Console: swap caps
+Screensaver after a while shuts down the external monitor, not coming back after password entry | Sometimes system non-responsive / auto standby
 
 CrashPlan
 VPN
