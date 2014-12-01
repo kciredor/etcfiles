@@ -1,0 +1,8 @@
+[Unit]
+Description=Set low swapiness for SSD
+
+[Service]
+ExecStart=/usr/bin/sysctl vm.swappiness=1
+
+[Install]
+WantedBy=multi-user.target

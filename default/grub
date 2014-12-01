@@ -2,7 +2,7 @@ GRUB_DEFAULT=0
 GRUB_TIMEOUT=5
 GRUB_DISTRIBUTOR="Arch"
 # GRUB_CMDLINE_LINUX_DEFAULT="quiet"
-GRUB_CMDLINE_LINUX_DEFAULT="quiet resume=/dev/disk/by-uuid/f7508418-e6f8-4989-920a-e1bfe176edfd"
+GRUB_CMDLINE_LINUX_DEFAULT="quiet elevator=noop resume=/dev/disk/by-uuid/f7508418-e6f8-4989-920a-e1bfe176edfd"
 GRUB_CMDLINE_LINUX=""
 
 # Preload both GPT and MBR modules so that they are not missed
