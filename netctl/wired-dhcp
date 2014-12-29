@@ -1,5 +1,5 @@
 Description='Wired USB DHCP'
-Interface=enp0s20u1u3
+Interface=enp0s20u2u3
 Connection=ethernet
 IP=dhcp
 DHCPClient='dhclient'

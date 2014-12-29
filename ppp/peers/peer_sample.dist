@@ -1,0 +1,6 @@
+pty "pptp vpnhostname.com --nolaunchpppd"
+name myusername
+remotename PPTP
+require-mppe-128
+file /etc/ppp/options
+ipparam myvpnname
