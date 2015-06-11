@@ -148,3 +148,23 @@ In case of no update for broadcom, fix like this:
     sudo dkms install broadcom-wl/6.30.223.248 --all
     sudo systemctl restart dkms.service
     sudo modprobe wl
+
+13. Printer
+
+sudo pacman -S cups ghostscript gsfonts hplib libcups python-gobject python-dbus python-pyqt4
+yaourt -Sa hplip-plugin
+
+sudo systemctl enable org.cups.cupsd.service
+sudo systemctl start org.cups.cupsd.service
+
+sudo hp-setup -i (or -u with python-pyqt4 - libcups en python-pyqt4 not required?)
+-> /usr/share/ppd/HP contains gzipped ppd file, gunzip it.
+
+sudo systemctl enable org.cups.cupsd.service
+sudo systemctl start org.cups.cupsd.service
+
+http://localhost:631 -> add printer -> HPLIP -> url from output of: hp-makeuri 192.168.0.25
+
+hp-testpage 192.168.0.25 -g
+
+hp-systray
