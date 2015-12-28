@@ -125,7 +125,7 @@ vim /etc/modules-load.d/virtualbox.conf -> vboxdrv, vboxnetadp, vboxnetflt, vbox
 11. Hibernate
 
 Run mkinitcpio -p linux after dropping my etcfiles mkinitcpio.conf with hibernate support: resume in HOOKS
-Run grub-mkconfig -o /boot/grub/grub.cfg after adding GRUB_CMDLINE_LINUX_DEFAULT="quiet elevator=noop resume=/dev/disk/by-uuid/YOUR_SWAP_DISK_UUID" (elevator=noop is good for SSD)
+Run grub-mkconfig -o /boot/grub/grub.cfg after adding GRUB_CMDLINE_LINUX_DEFAULT="intremap=off irqpoll quiet elevator=noop resume=/dev/disk/by-uuid/YOUR_SWAP_DISK_UUID" (elevator=noop is good for SSD)
 Now systemctl hibernate works (assuming you have enough swap space)
 
 12. Notes
