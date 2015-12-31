@@ -1,0 +1,11 @@
+[Unit]
+Description=Monitor hotplug
+
+[Service]
+Type=simple
+RemainAfterExit=no
+User=kciredor
+ExecStart=/home/kciredor/.dotfiles/helpers/hotplug_monitor.sh
+
+[Install]
+WantedBy=multi-user.target
