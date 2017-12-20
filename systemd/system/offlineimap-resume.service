@@ -1,0 +1,10 @@
+[Unit]
+Description=restart offlineimap on resume.
+After=suspend.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/systemctl restart offlineimap@kciredor.service
+
+[Install]
+WantedBy=suspend.target
