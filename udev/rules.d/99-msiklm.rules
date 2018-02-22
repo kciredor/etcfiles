@@ -1,2 +1,0 @@
-# run MSIKLM to configure the keyboard illumination
-ACTION=="add", ATTRS{idVendor}=="1770", ATTRS{idProduct}=="ff00", RUN+="/usr/bin/msiklm green,blue,green normal"
